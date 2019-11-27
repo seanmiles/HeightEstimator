@@ -55,10 +55,31 @@ int main(int argc, char* argv[])
 		circle(drawing, mc[i], 4, color, -1, 8, 0);
 	}
 	cout << "Center of contours = " << mc[0] << endl;
+
 	// Find contours in edge map
 	namedWindow("Picture");
 	imshow("Picture", drawing);
 	imwrite("paper_out.jpg", drawing);
 	waitKey(0);
+
+    // Use histogram of oriented gradients to detect people in image
+    HOGDescriptor hog;
+    hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
+    vector<Rect> detections;
+
+    // Detect in image
+    hog.detectMultiScale(img, detections, 0, Size(8, 8), Size(32, 32), 1.2, 2);
+
+    // Draw boxes around detections
+    for (auto& detection : detections)
+    {
+        rectangle(img, detection.tl(), detection.br(), Scalar(0, 0, 255), 2);
+    }
+
+    // Display detections
+    namedWindow("Detected People");
+    imshow("Detected People", img);
+    //imwrite("people_out.jpg", img);
+    waitKey(0);
     return 0;
 }
