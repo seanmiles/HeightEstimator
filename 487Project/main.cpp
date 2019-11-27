@@ -9,6 +9,7 @@
 #include <iostream>
 using namespace cv;
 using namespace std;
+RNG rng(12345);
 
 // main
 // precondition: A
