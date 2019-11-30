@@ -17,7 +17,7 @@ using namespace std;
 // postconditions: A
 int main(int argc, char* argv[])
 {
-	Mat img = imread("test.jpg");
+	Mat img = imread("test3.jpg");
 	if (!img.data) return -1;
 
 	PaperDetector paperDetector(img);

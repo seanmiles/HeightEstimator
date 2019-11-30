@@ -13,12 +13,14 @@ private:
 	Mat edged;
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierarchy;
+	vector<vector<Point> > squares;
 	Mat img;
 
 public:
-	PaperDetector(Mat img);
+	PaperDetector(Mat);
 	void detectPaper();
 	void displayPaper();
+	double angle(Point, Point, Point);
 };
 
 #endif
