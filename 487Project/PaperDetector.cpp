@@ -1,9 +1,9 @@
 #include "PaperDetector.h"
 
-RNG rng(12345);
-
 PaperDetector::PaperDetector(Mat img) {
 	this->img = img;
+	this->paperWidth = inchToPixel(8.5) / 4;
+	this->paperHeight = inchToPixel(11) / 4;
 }
 
 void PaperDetector::detectPaper() {
@@ -52,6 +52,7 @@ void PaperDetector::detectPaper() {
 
 void PaperDetector::displayPaper() {
 
+	cout << squares.size() << endl;
 	for (size_t i = 0; i < squares.size(); i++)
 	{
 		const Point* p = &squares[i][0];
@@ -63,6 +64,23 @@ void PaperDetector::displayPaper() {
 	imwrite("paper_out.jpg", img);
 }
 
+void PaperDetector::overlayImage(Mat overlay) {
+	for (size_t i = 0; i < squares.size(); i++) {
+		const Point* p = &squares[i][0];
+		Mat resizedOverlay;
+		resize(overlay, resizedOverlay, Size(paperWidth, paperHeight));
+		resizedOverlay.copyTo(img(Rect(p->x - paperWidth, p->y, resizedOverlay.cols, resizedOverlay.rows)));
+	}
+}
+
+void PaperDetector::setPaperDimensionsInInches(double width, double height) {
+	double widthPix = inchToPixel(width);
+	double heightPix = inchToPixel(height);
+	this->paperWidth = widthPix;
+	this->paperHeight = heightPix;
+}
+
+// Helper method
 double PaperDetector::angle(Point pt1, Point pt2, Point pt0)
 {
 	double dx1 = pt1.x - pt0.x;
@@ -70,4 +88,8 @@ double PaperDetector::angle(Point pt1, Point pt2, Point pt0)
 	double dx2 = pt2.x - pt0.x;
 	double dy2 = pt2.y - pt0.y;
 	return (dx1*dx2 + dy1 * dy2) / sqrt((dx1*dx1 + dy1 * dy1)*(dx2*dx2 + dy2 * dy2) + 1e-10);
+}
+
+double PaperDetector::inchToPixel(double in) {
+	return in * 96;
 }

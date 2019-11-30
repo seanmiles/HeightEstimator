@@ -18,10 +18,13 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	Mat img = imread("test3.jpg");
+	Mat overlay = imread("overlay.jpg");
 	if (!img.data) return -1;
+	if (!overlay.data) return -1;
 
 	PaperDetector paperDetector(img);
 	paperDetector.detectPaper();
+	paperDetector.overlayImage(overlay);
 	paperDetector.displayPaper();
 
     PeopleDetector peopleDetector(img);
