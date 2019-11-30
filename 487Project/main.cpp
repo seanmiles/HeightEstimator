@@ -3,6 +3,7 @@
 // Author: Sean Miles, Bradley Pratt, Tung Dinh
 // CSS 487 - Fall Quarter 2019
 
+#include "PeopleDetector.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -16,7 +17,7 @@ RNG rng(12345);
 // postconditions: A
 int main(int argc, char* argv[])
 {
-	Mat img = imread("paper.jpg");
+	Mat img = imread("test.jpg");
 	if (!img.data) return -1;
 
 	Mat gray;
@@ -59,27 +60,12 @@ int main(int argc, char* argv[])
 	// Find contours in edge map
 	namedWindow("Picture");
 	imshow("Picture", drawing);
-	imwrite("paper_out.jpg", drawing);
+	imwrite("contours_out.jpg", drawing);
 	waitKey(0);
 
-    // Use histogram of oriented gradients to detect people in image
-    HOGDescriptor hog;
-    hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
-    vector<Rect> detections;
+    PeopleDetector peopleDetector(img);
+    peopleDetector.detectPeople();
+    peopleDetector.displayPeople();
 
-    // Detect in image
-    hog.detectMultiScale(img, detections, 0, Size(8, 8), Size(32, 32), 1.2, 2);
-
-    // Draw boxes around detections
-    for (auto& detection : detections)
-    {
-        rectangle(img, detection.tl(), detection.br(), Scalar(0, 0, 255), 2);
-    }
-
-    // Display detections
-    namedWindow("Detected People");
-    imshow("Detected People", img);
-    //imwrite("people_out.jpg", img);
-    waitKey(0);
     return 0;
 }
