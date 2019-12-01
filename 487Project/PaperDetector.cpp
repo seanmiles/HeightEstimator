@@ -7,8 +7,8 @@ const int BOTTOM_RIGHT = 1;
 
 PaperDetector::PaperDetector(Mat img) {
 	this->img = img;
-	this->paperWidth = inchToPixel(8.5);
-	this->paperHeight = inchToPixel(11);
+	this->paperWidth = 8.5;
+	this->paperHeight = 11;
 	hasOverlayImg = false;
 	height = 0;
 	objWidth = 0;
@@ -101,8 +101,8 @@ void PaperDetector::overlayImage(Mat overlay) {
 }
 
 void PaperDetector::setPaperDimensionsInInches(double width, double height) {
-	this->paperWidth = inchToPixel(width) / 4;
-	this->paperHeight = inchToPixel(height) / 4;
+	this->paperWidth = width;
+	this->paperHeight = height;
 }
 
 int PaperDetector::getHeightInFts() {
