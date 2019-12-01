@@ -1,5 +1,12 @@
 #include "PeopleDetector.h"
 
+void PeopleDetector::height() {
+	Rect person = detections[0];
+	Point top = person.tl();
+	Point bottom = person.br();
+	personHeight = abs(top.y - bottom.y);
+}
+
 PeopleDetector::PeopleDetector(Mat newImg)
 {
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
@@ -13,6 +20,8 @@ void PeopleDetector::detectPeople()
     // Perform non maximum suppression
     vector<Rect> indices;
     //NMSBoxes(detections, confidences, 0, 0, indices, 1.2f, 0);
+
+    height();
 }
 
 void PeopleDetector::displayPeople()
@@ -35,4 +44,8 @@ void PeopleDetector::displayPeople()
     imshow("Detected People", img);
     imwrite("people_out.jpg", img);
     waitKey(0);
+}
+
+int PeopleDetector::getHeight() {
+	return personHeight;
 }
