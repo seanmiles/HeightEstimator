@@ -21,9 +21,15 @@
     <ClCompile Include="PeopleDetector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PaperDetector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PeopleDetector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PaperDetector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

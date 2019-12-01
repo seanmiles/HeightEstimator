@@ -9,7 +9,7 @@ PeopleDetector::PeopleDetector(Mat newImg)
 void PeopleDetector::detectPeople()
 {
     // Detect in image
-    hog.detectMultiScale(img, detections, 0, Size(8, 8), Size(32, 32), 1.2, 2);
+    hog.detectMultiScale(img, detections, 0, Size(3, 3), Size(), 1.1, 2);
 }
 
 void PeopleDetector::displayPeople()

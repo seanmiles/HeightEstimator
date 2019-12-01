@@ -22,14 +22,18 @@ int main(int argc, char* argv[])
 	if (!img.data) return -1;
 	if (!overlay.data) return -1;
 
+    // Detections
 	PaperDetector paperDetector(img);
 	paperDetector.detectPaper();
-	paperDetector.overlayImage(overlay);
-	paperDetector.displayPaper();
-
     PeopleDetector peopleDetector(img);
     peopleDetector.detectPeople();
+
+    // Overlay Image
+	paperDetector.overlayImage(overlay);
+    // Display
+	paperDetector.displayPaper();
     peopleDetector.displayPeople();
 
+    waitKey(0);
     return 0;
 }
