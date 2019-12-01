@@ -11,6 +11,8 @@ PaperDetector::PaperDetector(Mat img) {
 	this->paperHeight = inchToPixel(11);
 	hasOverlayImg = false;
 	height = 0;
+	objWidth = 0;
+	objHeight = 0;
 }
 
 void PaperDetector::detectPaper() {
@@ -90,7 +92,9 @@ void PaperDetector::overlayImage(Mat overlay) {
 		const Point br = squares[i][BOTTOM_RIGHT];
 		Mat resizedOverlay;
 		int w = abs(tl.x - tr.x);
+		objWidth = w;
 		int h = abs(tl.y - bl.y);
+		objHeight = h;
 		resize(overlay, resizedOverlay, Size(w, h));
 		resizedOverlay.copyTo(img(Rect(tl.x, tl.y, resizedOverlay.cols, resizedOverlay.rows)));
 	}
@@ -122,3 +126,20 @@ double PaperDetector::angle(Point pt1, Point pt2, Point pt0)
 double PaperDetector::inchToPixel(double in) {
 	return in * 96;
 }
+
+double PaperDetector::getPaperWidth() {
+	return paperWidth;
+}
+
+double PaperDetector::getPaperHeight() {
+	return paperHeight;
+}
+
+int PaperDetector::getObjectWidth() {
+	return objWidth;
+}
+
+int PaperDetector::getObjectHeight() {
+	return objHeight;
+}
+

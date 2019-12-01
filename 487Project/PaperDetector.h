@@ -13,8 +13,10 @@ class PaperDetector {
 private:
 	vector<vector<Point>> contours;
 	vector<vector<Point> > squares;
-	double paperWidth;
-	double paperHeight;
+	double paperWidth; //user input width (inches)
+	double paperHeight; //user input height (inches)
+	int objWidth; //recognized object width in pixels
+	int objHeight; //recognized object height in pixels
 	Mat img;
 	double height;
 	bool hasOverlayImg;
@@ -30,6 +32,11 @@ public:
 	// Helper methods
 	double angle(Point, Point, Point);
 	double inchToPixel(double);
+
+	double getPaperWidth(); 
+	double getPaperHeight(); 
+	int getObjectWidth(); 
+	int getObjectHeight(); 
 };
 
 #endif
