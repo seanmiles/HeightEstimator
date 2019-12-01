@@ -17,15 +17,15 @@ private:
     vector<Rect> detections;
     vector<double> confidences;
     Mat img;
-	int personHeight; //store height of box
-	void height(); //calculates height of box outlining person detection
+	int personHeight;            // store height of box
+	void calculateHeight();      // calculates height of box outlining person detection
 
 public:
     PeopleDetector(Mat newImg);
     void detectPeople();
     void displayPeople();
 
-	int getHeight(); //returns pixel height of person in image
+	int getHeight(); // returns pixel height of person in image
 };
 
 #endif
