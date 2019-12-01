@@ -16,6 +16,8 @@ private:
 	double paperWidth;
 	double paperHeight;
 	Mat img;
+	double height;
+	bool hasOverlayImg;
 
 public:
 	PaperDetector(Mat);
@@ -23,6 +25,8 @@ public:
 	void overlayImage(Mat);
 	void displayPaper();
 	void setPaperDimensionsInInches(double, double);
+	int getHeightInFts();
+	int getHeightInInches();
 	// Helper methods
 	double angle(Point, Point, Point);
 	double inchToPixel(double);

@@ -9,6 +9,8 @@ PaperDetector::PaperDetector(Mat img) {
 	this->img = img;
 	this->paperWidth = inchToPixel(8.5);
 	this->paperHeight = inchToPixel(11);
+	hasOverlayImg = false;
+	height = 0;
 }
 
 void PaperDetector::detectPaper() {
@@ -63,6 +65,16 @@ void PaperDetector::displayPaper() {
 		int n = (int)squares[i].size();
 		polylines(img, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
 		circle(img, squares[i][3], 4, Scalar(0, 0, 255));
+		const Point tl = squares[i][TOP_LEFT];
+		const Point tr = squares[i][TOP_RIGHT];
+		const Point bl = squares[i][BOTTOM_LEFT];
+		const Point br = squares[i][BOTTOM_RIGHT];
+		int w = abs(tl.x - tr.x);
+		int h = abs(tl.y - bl.y);
+		if (!hasOverlayImg) {
+			String text =  to_string(getHeightInFts()) + "'" + to_string(getHeightInInches()) + "''";
+			putText(img, text, Point(tl.x + w / 2 - text.length() * 3, tl.y + h / 2), FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
+		}
 	}
 
 	imshow("Picture", img);
@@ -70,6 +82,7 @@ void PaperDetector::displayPaper() {
 }
 
 void PaperDetector::overlayImage(Mat overlay) {
+	hasOverlayImg = true;
 	for (size_t i = 0; i < squares.size(); i++) {
 		const Point tl = squares[i][TOP_LEFT];
 		const Point tr = squares[i][TOP_RIGHT];
@@ -86,6 +99,14 @@ void PaperDetector::overlayImage(Mat overlay) {
 void PaperDetector::setPaperDimensionsInInches(double width, double height) {
 	this->paperWidth = inchToPixel(width) / 4;
 	this->paperHeight = inchToPixel(height) / 4;
+}
+
+int PaperDetector::getHeightInFts() {
+	return (int)height;
+}
+
+int PaperDetector::getHeightInInches() {
+	return 0;
 }
 
 // Helper method

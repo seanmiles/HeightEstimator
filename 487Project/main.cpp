@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     peopleDetector.detectPeople();
 
     // Overlay Image
-	paperDetector.overlayImage(overlay);
+	//paperDetector.overlayImage(overlay);
     // Display
 	paperDetector.displayPaper();
     peopleDetector.displayPeople();
