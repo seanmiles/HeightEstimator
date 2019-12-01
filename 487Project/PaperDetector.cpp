@@ -1,5 +1,10 @@
 #include "PaperDetector.h"
 
+const int TOP_LEFT = 3;
+const int TOP_RIGHT = 0;
+const int BOTTOM_LEFT = 2;
+const int BOTTOM_RIGHT = 1;
+
 PaperDetector::PaperDetector(Mat img) {
 	this->img = img;
 	this->paperWidth = inchToPixel(8.5);
@@ -52,12 +57,12 @@ void PaperDetector::detectPaper() {
 
 void PaperDetector::displayPaper() {
 
-	cout << squares.size() << endl;
 	for (size_t i = 0; i < squares.size(); i++)
 	{
 		const Point* p = &squares[i][0];
 		int n = (int)squares[i].size();
 		polylines(img, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
+		circle(img, squares[i][3], 4, Scalar(0, 0, 255));
 	}
 
 	imshow("Picture", img);
@@ -66,10 +71,15 @@ void PaperDetector::displayPaper() {
 
 void PaperDetector::overlayImage(Mat overlay) {
 	for (size_t i = 0; i < squares.size(); i++) {
-		const Point* p = &squares[i][0];
+		const Point tl = squares[i][TOP_LEFT];
+		const Point tr = squares[i][TOP_RIGHT];
+		const Point bl = squares[i][BOTTOM_LEFT];
+		const Point br = squares[i][BOTTOM_RIGHT];
 		Mat resizedOverlay;
-		resize(overlay, resizedOverlay, Size(paperWidth, paperHeight));
-		resizedOverlay.copyTo(img(Rect(p->x - paperWidth, p->y, resizedOverlay.cols, resizedOverlay.rows)));
+		int w = abs(tl.x - tr.x);
+		int h = abs(tl.y - bl.y);
+		resize(overlay, resizedOverlay, Size(w, h));
+		resizedOverlay.copyTo(img(Rect(tl.x, tl.y, resizedOverlay.cols, resizedOverlay.rows)));
 	}
 }
 

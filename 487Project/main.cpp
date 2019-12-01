@@ -24,7 +24,6 @@ int main(int argc, char* argv[])
 
 	PaperDetector paperDetector(img);
 	paperDetector.detectPaper();
-	paperDetector.setPaperDimensionsInInches(11, 8.5);
 	paperDetector.overlayImage(overlay);
 	paperDetector.displayPaper();
 
