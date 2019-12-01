@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HeightCalculator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PaperDetector.cpp" />
     <ClCompile Include="PeopleDetector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HeightCalculator.h" />
     <ClInclude Include="PaperDetector.h" />
     <ClInclude Include="PeopleDetector.h" />
   </ItemGroup>
