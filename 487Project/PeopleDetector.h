@@ -13,6 +13,7 @@ class PeopleDetector
 private:
     HOGDescriptor hog;
     vector<Rect> detections;
+    vector<Rect> detections_filtered;
     Mat img;
 
 public:
