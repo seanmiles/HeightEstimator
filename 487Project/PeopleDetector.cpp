@@ -3,33 +3,16 @@
 PeopleDetector::PeopleDetector(Mat newImg)
 {
     hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
-    resize(newImg, img, Size(), 0.25, 0.25);
+    resize(newImg, img, Size(), 0.5, 0.5);
 }
 
 void PeopleDetector::detectPeople()
 {
     // Detect in image
-    hog.detectMultiScale(img, detections, 0, Size(1, 1), Size(), 1.15, 2, false);
-
-    // Eliminate overlapping rectangles
-    /*int i, j;
-    for (i = 0; i < detections.size(); i++)
-    {
-        Rect r = detections[i];
-        for (j = 0; j < detections.size(); j++) 
-        {
-            if (j != i) {
-                Rect iRect = r;
-                Rect jRect = detections[j];
-                Rect intersectRect = (iRect & jRect);
-                if (intersectRect.area() >= iRect.area() * 0.9) break;
-            }
-        }
-        if (j == detections.size())
-            detections_filtered.push_back(r);
-    }*/
-
-
+    hog.detectMultiScale(img, detections, 0, Size(1, 1), Size(), 1.5, 2, false);
+    // Perform non maximum suppression
+    vector<Rect> indices;
+    //NMSBoxes(detections, confidences, 0, 0, indices, 1.2f, 0);
 }
 
 void PeopleDetector::displayPeople()
