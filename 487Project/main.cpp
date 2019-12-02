@@ -32,13 +32,15 @@ int main(int argc, char* argv[])
 	//Height Calculations
 	HeightCalculator height(paper.getPaperHeight(), paper.getPaperWidth(),
 		paper.getObjectHeight(), paper.getObjectWidth(), people.getHeight());
+	String howTall = height.getHeightInFeet();
+
 	cout << height.getHeightInFeet() << endl;
 	cout << height.getHeightInMeters() << endl;
 
     // Overlay Image
 	//paperDetector.overlayImage(overlay);
     // Display
-	paper.displayPaper();
+	paper.displayPaper(howTall);
     people.displayPeople();
 
     waitKey(0);

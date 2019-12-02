@@ -25,7 +25,7 @@ public:
 	PaperDetector(Mat);
 	void detectPaper();
 	void overlayImage(Mat);
-	void displayPaper();
+	void displayPaper(String);
 	void setPaperDimensionsInInches(double, double);
 	int getHeightInFts();
 	int getHeightInInches();

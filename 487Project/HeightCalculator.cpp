@@ -33,7 +33,8 @@ HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, int
 
 String HeightCalculator::getHeightInFeet() {
 	int RemainInches = inches - (floor(feet) * 12);
-	String height = "" + to_string(floor(feet)) + "' " + to_string(RemainInches) + "\"";
+	int foot = floor(feet);
+	String height = "" + to_string(foot) + "' " + to_string(RemainInches) + "\"";
 	return height;
 }
 

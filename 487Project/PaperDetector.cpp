@@ -68,7 +68,7 @@ void PaperDetector::detectPaper() {
 	}
 }
 
-void PaperDetector::displayPaper() {
+void PaperDetector::displayPaper(String howTall) {
 
 	for (size_t i = 0; i < squares.size(); i++)
 	{
@@ -83,8 +83,8 @@ void PaperDetector::displayPaper() {
 		int w = abs(tl.x - tr.x);
 		int h = abs(tl.y - bl.y);
 		if (!hasOverlayImg) {
-			String text =  to_string(getHeightInFts()) + "'" + to_string(getHeightInInches()) + "''";
-			putText(img, text, Point(tl.x + w / 2 - text.length() * 3, tl.y + h / 2), FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
+			//String text =  to_string(getHeightInFts()) + "'" + to_string(getHeightInInches()) + "''";
+			putText(img, howTall, Point(tl.x + w / 2 - howTall.length() * 3, tl.y + h / 2), FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
 		}
 	}
 
