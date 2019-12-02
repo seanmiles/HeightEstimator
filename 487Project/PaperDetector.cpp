@@ -57,6 +57,15 @@ void PaperDetector::detectPaper() {
 		}
 	}
 
+	//for setting object values once paper has been detected;
+	for (size_t i = 0; i < squares.size(); i++) {
+		const Point tl = squares[i][TOP_LEFT];
+		const Point tr = squares[i][TOP_RIGHT];
+		const Point bl = squares[i][BOTTOM_LEFT];
+		const Point br = squares[i][BOTTOM_RIGHT];
+		objWidth = abs(tl.x - tr.x);
+		objHeight = abs(tl.y - bl.y);
+	}
 }
 
 void PaperDetector::displayPaper() {
@@ -92,9 +101,7 @@ void PaperDetector::overlayImage(Mat overlay) {
 		const Point br = squares[i][BOTTOM_RIGHT];
 		Mat resizedOverlay;
 		int w = abs(tl.x - tr.x);
-		objWidth = w;
 		int h = abs(tl.y - bl.y);
-		objHeight = h;
 		resize(overlay, resizedOverlay, Size(w, h));
 		resizedOverlay.copyTo(img(Rect(tl.x, tl.y, resizedOverlay.cols, resizedOverlay.rows)));
 	}

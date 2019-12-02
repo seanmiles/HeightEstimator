@@ -5,6 +5,7 @@
 
 #include "PeopleDetector.h"
 #include "PaperDetector.h"
+#include "HeightCalculator.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
@@ -23,16 +24,22 @@ int main(int argc, char* argv[])
 	if (!overlay.data) return -1;
 
     // Detections
-	PaperDetector paperDetector(img);
-	paperDetector.detectPaper();
-    PeopleDetector peopleDetector(img);
-    peopleDetector.detectPeople();
+	PaperDetector paper(img);
+	paper.detectPaper();
+    PeopleDetector people(img);
+    people.detectPeople();
+
+	//Height Calculations
+	HeightCalculator height(paper.getPaperHeight(), paper.getPaperWidth(),
+		paper.getObjectHeight(), paper.getObjectWidth(), people.getHeight());
+	cout << height.getHeightInFeet() << endl;
+	cout << height.getHeightInMeters() << endl;
 
     // Overlay Image
 	//paperDetector.overlayImage(overlay);
     // Display
-	paperDetector.displayPaper();
-    peopleDetector.displayPeople();
+	paper.displayPaper();
+    people.displayPeople();
 
     waitKey(0);
     return 0;
