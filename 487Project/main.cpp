@@ -38,9 +38,10 @@ int main(int argc, char* argv[])
 	cout << height.getHeightInMeters() << endl;
 
     // Overlay Image
-	//paperDetector.overlayImage(overlay);
+	//paper.overlayImage(overlay);
+	paper.overlayImage(howTall);
     // Display
-	paper.displayPaper(howTall);
+	paper.displayPaper();
     people.displayPeople();
 
     waitKey(0);

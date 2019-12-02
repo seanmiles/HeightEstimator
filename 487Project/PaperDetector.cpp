@@ -68,7 +68,7 @@ void PaperDetector::detectPaper() {
 	}
 }
 
-void PaperDetector::displayPaper(String howTall) {
+void PaperDetector::displayPaper() {
 
 	for (size_t i = 0; i < squares.size(); i++)
 	{
@@ -76,16 +76,6 @@ void PaperDetector::displayPaper(String howTall) {
 		int n = (int)squares[i].size();
 		polylines(img, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
 		circle(img, squares[i][3], 4, Scalar(0, 0, 255));
-		const Point tl = squares[i][TOP_LEFT];
-		const Point tr = squares[i][TOP_RIGHT];
-		const Point bl = squares[i][BOTTOM_LEFT];
-		const Point br = squares[i][BOTTOM_RIGHT];
-		int w = abs(tl.x - tr.x);
-		int h = abs(tl.y - bl.y);
-		if (!hasOverlayImg) {
-			//String text =  to_string(getHeightInFts()) + "'" + to_string(getHeightInInches()) + "''";
-			putText(img, howTall, Point(tl.x + w / 2 - howTall.length() * 3, tl.y + h / 2), FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
-		}
 	}
 
 	imshow("Picture", img);
@@ -93,7 +83,6 @@ void PaperDetector::displayPaper(String howTall) {
 }
 
 void PaperDetector::overlayImage(Mat overlay) {
-	hasOverlayImg = true;
 	for (size_t i = 0; i < squares.size(); i++) {
 		const Point tl = squares[i][TOP_LEFT];
 		const Point tr = squares[i][TOP_RIGHT];
@@ -104,6 +93,18 @@ void PaperDetector::overlayImage(Mat overlay) {
 		int h = abs(tl.y - bl.y);
 		resize(overlay, resizedOverlay, Size(w, h));
 		resizedOverlay.copyTo(img(Rect(tl.x, tl.y, resizedOverlay.cols, resizedOverlay.rows)));
+	}
+}
+
+void PaperDetector::overlayImage(String howTall) {
+	for (size_t i = 0; i < squares.size(); i++) {
+		const Point tl = squares[i][TOP_LEFT];
+		const Point tr = squares[i][TOP_RIGHT];
+		const Point bl = squares[i][BOTTOM_LEFT];
+		const Point br = squares[i][BOTTOM_RIGHT];
+		int w = abs(tl.x - tr.x);
+		int h = abs(tl.y - bl.y);
+		putText(img, howTall, Point(tl.x + w / 2 - howTall.length() * 3, tl.y + h / 2), FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
 	}
 }
 
