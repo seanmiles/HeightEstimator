@@ -18,9 +18,9 @@ private:
 	int objWidth; //recognized object width in pixels
 	int objHeight; //recognized object height in pixels
 	Mat img;
+	Mat croppedImg;
 	double height;
 	bool hasOverlayImg;
-	int imgHeight;
 
 public:
 	PaperDetector(Mat);
@@ -31,6 +31,7 @@ public:
 	void setPaperDimensionsInInches(double, double);
 	int getHeightInFts();
 	int getHeightInInches();
+	void setDetectedArea(Rect, Mat);
 	// Helper methods
 	double angle(Point, Point, Point);
 	double inchToPixel(double);
@@ -39,7 +40,6 @@ public:
 	double getPaperHeight(); 
 	int getObjectWidth(); 
 	int getObjectHeight(); 
-	int getImageHeight();
 };
 
 #endif

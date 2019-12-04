@@ -24,15 +24,16 @@ int main(int argc, char* argv[])
 	if (!overlay.data) return -1;
 
     // Detections
-	PaperDetector paper(img);
-	paper.detectPaper();
     PeopleDetector people(img);
     people.detectPeople();
+	PaperDetector paper(img);
+	paper.setDetectedArea(people.getDetectedRect(), people.getDetectedImg());
+	paper.detectPaper();
 
 	//Height Calculations
 	HeightCalculator height(paper.getPaperHeight(), paper.getPaperWidth(),
 		paper.getObjectHeight(), paper.getObjectWidth(), people.getHeight(),
-		paper.getImageHeight());
+		paper.getPaperHeight());
 	String howTall = height.getHeightInFeet();
 
 	cout << height.getHeightInFeet() << endl;

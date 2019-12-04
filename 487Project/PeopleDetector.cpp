@@ -55,3 +55,12 @@ double PeopleDetector::getHeight()
 	//return personHeight * 3;
     return personHeight / img.rows;
 }
+
+Rect PeopleDetector::getDetectedRect() 
+{
+	return detections[0];
+}
+
+Mat PeopleDetector::getDetectedImg() {
+	return img;
+}

@@ -28,6 +28,8 @@ public:
     void displayPeople();
 
 	double getHeight(); // returns pixel height of person in image
+	Rect getDetectedRect();
+	Mat getDetectedImg();
 };
 
 #endif
