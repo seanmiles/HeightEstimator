@@ -30,13 +30,18 @@ void PaperDetector::detectPaper() {
 	Mat pyr, timg, gray0(croppedImg.size(), CV_8U), gray;
 	// down-scale and upscale the image to filter out the noise
 	pyrDown(croppedImg, pyr, Size(croppedImg.cols / 2, croppedImg.rows / 2));
+	//imshow("Down", pyr);
 	pyrUp(pyr, timg, croppedImg.size());
+	//imshow("Up", timg);
+	//Mat timg(croppedImg);
+	//medianBlur(croppedImg, timg, 9);
+	//Mat gray0(timg.size(), CV_8U), gray;
 	//imwrite("blurred.jpg", blurred);
 	
 	for (int c = 0; c < 3; c++) {
 		int ch[] = { c, 0 };
 		mixChannels(&timg, 1, &gray0, 1, ch, 1);
-		string path = "gray0-mixCh" + to_string(c) + ".jpg";
+		//string path = "gray0-mixCh" + to_string(c) + ".jpg";
 		//imwrite(path, gray0);
 		for (int l = 0; l < N; l++) {
 			if (l == 0) {
@@ -54,7 +59,7 @@ void PaperDetector::detectPaper() {
 			vector<Vec4i> hierarchy;
 			Mat drawing = Mat::zeros(gray.size(), CV_8UC3);
 			for (size_t i = 0; i < contours.size(); i++) {
-				Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+				//Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 				//drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
 				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.03, true);
 				
@@ -81,27 +86,57 @@ void PaperDetector::detectPaper() {
 		const Point tr = squares[i][TOP_RIGHT];
 		const Point bl = squares[i][BOTTOM_LEFT];
 		const Point br = squares[i][BOTTOM_RIGHT];
-		int w = 0, h = 0;
-		if (abs(tl.x - tr.x) < 10) {
-			w = abs(tl.y - tr.y);
-			h = abs(tl.x - bl.x);
+		const Point* p = &squares[i][0];
+		objWidth = abs(tl.x - br.x);
+		objHeight = abs(tl.y - br.y);
+		int avg = 0;
+		Point left = tl, right = br;
+		// tl at bl
+		if (tl.x < br.x && tl.y < br.y) {
+			left = bl;
+			right = tr;
 		}
-		else {
-			w = abs(tl.x - tr.x);
-			h = abs(tl.y - bl.y);
+		// tl at br
+		else if (tl.x > br.x && tl.y < br.y) {
+			left = br;
+			right = tl;
 		}
-		objWidth = w;
-		objHeight = h;
+		// tl at tr
+		else if (tl.x > br.x && tl.y > br.y) {
+			left = tr;
+			right = bl;
+		}
+		cout << tl << ", " << br << "  " << left << ", " << right << endl;
+		if (p->x > 3 && p->y > 3) {
+			for (int r = left.x; r < right.x; r++) {
+				for (int c = left.y - 1; c >= right.y; c--) {
+					for (int b = 0; b < 3; b++) {
+						if (r < img.rows && c < img.cols) {
+							avg += (int)img.at<Vec3b>(r, c)[b];
+						}
+					}
+					avg /= 3;
+					if (avg >= 220) {
+						avg = 0;
+						paperSquares.push_back(squares[i]);
+					}
+					else {
+						avg = 0;
+					}
+				}
+			}
+		}
+		
 	}
+	cout << paperSquares.size() << endl;
 }
 
 void PaperDetector::displayPaper() {
-	for (size_t i = 0; i < squares.size(); i++)
+	for (size_t i = 0; i < paperSquares.size(); i++)
 	{
-		const Point* p = &squares[i][0];
-		int n = (int)squares[i].size();
+		const Point* p = &paperSquares[i][0];
+		int n = (int)paperSquares[i].size();
 		polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
-		circle(croppedImg, squares[i][BOTTOM_RIGHT], 4, Scalar(0, 0, 255));
 	}
 
 	imshow("Picture", croppedImg);
@@ -109,11 +144,11 @@ void PaperDetector::displayPaper() {
 }
 
 void PaperDetector::overlayImage(Mat overlay) {
-	for (size_t i = 0; i < squares.size(); i++) {
-		const Point tl = squares[i][TOP_LEFT];
-		const Point tr = squares[i][TOP_RIGHT];
-		const Point bl = squares[i][BOTTOM_LEFT];
-		const Point br = squares[i][BOTTOM_RIGHT];
+	for (size_t i = 0; i < paperSquares.size(); i++) {
+		const Point tl = paperSquares[i][TOP_LEFT];
+		const Point tr = paperSquares[i][TOP_RIGHT];
+		const Point bl = paperSquares[i][BOTTOM_LEFT];
+		const Point br = paperSquares[i][BOTTOM_RIGHT];
 		Mat resizedOverlay;
 		int w = 0, h = 0;
 		int x = 0, y = 0;
@@ -136,24 +171,12 @@ void PaperDetector::overlayImage(Mat overlay) {
 }
 
 void PaperDetector::overlayImage(String howTall) {
-	for (size_t i = 0; i < squares.size(); i++) {
-		const Point tl = squares[i][TOP_LEFT];
-		const Point tr = squares[i][TOP_RIGHT];
-		const Point bl = squares[i][BOTTOM_LEFT];
-		const Point br = squares[i][BOTTOM_RIGHT];
-		int w = 0, h = 0;
-		Point p = Point(0, 0);
-		cout << abs(tl.x - tr.x) << endl;
-		if (abs(tl.x - tr.x) < 30) {
-			w = abs(tl.y - tr.y);
-			h = abs(tl.x - bl.x);
-			p = Point(tl.x + w / 2 - howTall.length() * 3, tl.y - h / 2);
-		}
-		else {
-			w = abs(tl.x - tr.x);
-			h = abs(tl.y - bl.y);
-			p = Point(tl.x + w / 2 - howTall.length() * 3, tl.y + h / 2);
-		}
+	for (size_t i = 0; i < paperSquares.size(); i++) {
+		const Point tl = paperSquares[i][TOP_LEFT];
+		const Point br = paperSquares[i][BOTTOM_RIGHT];
+		int w = abs(tl.x - br.x);
+		int h = abs(tl.y - br.y);
+		Point p = Point(tl.x + w / 2 - howTall.length() * 3, tl.y - (tl.y - br.y) / 2);
 		putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
 	}
 }

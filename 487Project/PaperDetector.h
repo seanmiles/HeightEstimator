@@ -12,7 +12,8 @@ class PaperDetector {
 
 private:
 	vector<vector<Point>> contours;
-	vector<vector<Point> > squares;
+	vector<vector<Point>> squares;
+	vector<vector<Point>> paperSquares;
 	double paperWidth; //user input width (inches)
 	double paperHeight; //user input height (inches)
 	int objWidth; //recognized object width in pixels
@@ -21,7 +22,7 @@ private:
 	Mat croppedImg;
 	double height;
 	bool hasOverlayImg;
-	int thresh = 50, N = 11;
+	int thresh = 50, N = 5;
 
 public:
 	PaperDetector(Mat);

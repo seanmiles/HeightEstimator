@@ -36,8 +36,8 @@ int main(int argc, char* argv[])
 		paper.getPaperHeight());
 	String howTall = height.getHeightInFeet();
 
-	cout << height.getHeightInFeet() << endl;
-	cout << height.getHeightInMeters() << endl;
+	//cout << height.getHeightInFeet() << endl;
+	//cout << height.getHeightInMeters() << endl;
 
     // Overlay Image
 	//paper.overlayImage(overlay);
