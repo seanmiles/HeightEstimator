@@ -67,7 +67,7 @@ void PaperDetector::detectPaper() {
 		const Point bl = squares[i][BOTTOM_LEFT];
 		const Point br = squares[i][BOTTOM_RIGHT];
 		int w = 0, h = 0;
-		if (abs(tl.x - tr.x) < 10) {
+		if (abs(tl.x - tr.x) < 30) {
 			w = abs(tl.y - tr.y);
 			h = abs(tl.x - bl.x);
 		}
