@@ -18,7 +18,7 @@ using namespace std;
 // postconditions: A
 int main(int argc, char* argv[])
 {
-	Mat img = imread("test1.jpg");
+	Mat img = imread("test4.jpg");
 	Mat overlay = imread("overlay.jpg");
 	if (!img.data) return -1;
 	if (!overlay.data) return -1;

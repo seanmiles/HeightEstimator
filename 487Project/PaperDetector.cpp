@@ -28,7 +28,7 @@ void PaperDetector::setDetectedArea(Rect r, Mat resized) {
 void PaperDetector::detectPaper() {
 	Mat image = croppedImg.clone();
 	Mat blurred(image);
-	medianBlur(image, blurred, 9);
+	medianBlur(image, blurred, 11);
 	Mat gray0(blurred.size(), CV_8U), gray;
 	imwrite("blurred.jpg", blurred);
 	
