@@ -31,9 +31,9 @@ void PaperDetector::detectPaper() {
 	Mat pyr, timg, gray0(croppedImg.size(), CV_8U), gray;
 	// down-scale and upscale the image to filter out the noise
 	pyrDown(croppedImg, pyr, Size(croppedImg.cols / 2, croppedImg.rows / 2));
-	//imshow("Down", pyr);
+	//imwrite("Down.jpg", pyr);
 	pyrUp(pyr, timg, croppedImg.size());
-	//imshow("Up", timg);
+	//imwrite("Up.jpg", timg);
 	//Mat timg(croppedImg);
 	//medianBlur(croppedImg, timg, 9);
 	//Mat gray0(timg.size(), CV_8U), gray;
@@ -178,7 +178,7 @@ void PaperDetector::overlayImage(String howTall) {
 		int w = abs(tl.x - br.x);
 		int h = abs(tl.y - br.y);
 		Point p = Point(tl.x + w / 2 - howTall.length() * 3, tl.y - (tl.y - br.y) / 2);
-		putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
+		//putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
 	}
 }
 
@@ -228,4 +228,3 @@ int PaperDetector::getObjectHeight() {
 int PaperDetector::getImageHeight() {
 	return imgHeight;
 }
-
