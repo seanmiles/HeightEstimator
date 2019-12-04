@@ -24,35 +24,39 @@ void PaperDetector::setDetectedArea(Rect r, Mat resized) {
 	Rect crop(r.tl().x * ratioRows, r.tl().y * ratioCols, w, h);
 	croppedImg = img(crop);
 }
-
+RNG rng(12345);
 void PaperDetector::detectPaper() {
-	Mat image = croppedImg.clone();
-	Mat blurred(image);
-	medianBlur(image, blurred, 11);
-	Mat gray0(blurred.size(), CV_8U), gray;
-	imwrite("blurred.jpg", blurred);
+	squares.clear();
+	Mat pyr, timg, gray0(croppedImg.size(), CV_8U), gray;
+	// down-scale and upscale the image to filter out the noise
+	pyrDown(croppedImg, pyr, Size(croppedImg.cols / 2, croppedImg.rows / 2));
+	pyrUp(pyr, timg, croppedImg.size());
+	//imwrite("blurred.jpg", blurred);
 	
 	for (int c = 0; c < 3; c++) {
 		int ch[] = { c, 0 };
-		mixChannels(&blurred, 1, &gray0, 1, ch, 1);
+		mixChannels(&timg, 1, &gray0, 1, ch, 1);
 		string path = "gray0-mixCh" + to_string(c) + ".jpg";
 		imwrite(path, gray0);
-		const int threshold_level = 2;
-		for (int l = 0; l < threshold_level; l++) {
+		for (int l = 0; l < N; l++) {
 			if (l == 0) {
-				Canny(gray0, gray, 10, 20, 3);
+				Canny(gray0, gray, 0, thresh, 5);
 				dilate(gray, gray, Mat(), Point(-1, -1));
 				imwrite("gray-threshold0.jpg", gray);
 			}
 			else {
-				gray = gray0 >= (l + 1) * 255 / threshold_level;
+				gray = gray0 >= (l + 1) * 255 / N;
 				imwrite("gray-threshold1.jpg", gray);
 			}
 			findContours(gray, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 
 			vector<Point> approx;
+			vector<Vec4i> hierarchy;
+			Mat drawing = Mat::zeros(gray.size(), CV_8UC3);
 			for (size_t i = 0; i < contours.size(); i++) {
-				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.02, true);
+				Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+				drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
+				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.03, true);
 				
 				if (approx.size() == 4 
 					&& fabs(contourArea(Mat(approx))) > 1000 
@@ -67,6 +71,7 @@ void PaperDetector::detectPaper() {
 					}
 				}
 			}
+			imwrite("Contours.jpg", drawing);
 		}
 	}
 

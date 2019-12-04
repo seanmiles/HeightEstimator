@@ -21,6 +21,7 @@ private:
 	Mat croppedImg;
 	double height;
 	bool hasOverlayImg;
+	int thresh = 50, N = 11;
 
 public:
 	PaperDetector(Mat);
