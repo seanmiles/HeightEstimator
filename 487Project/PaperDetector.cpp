@@ -14,6 +14,7 @@ PaperDetector::PaperDetector(Mat img) {
 	height = 0;
 	objWidth = 0;
 	objHeight = 0;
+	imgHeight = img.rows;
 }
 
 void PaperDetector::setDetectedArea(Rect r, Mat resized) {
@@ -222,5 +223,9 @@ int PaperDetector::getObjectWidth() {
 
 int PaperDetector::getObjectHeight() {
 	return objHeight;
+}
+
+int PaperDetector::getImageHeight() {
+	return imgHeight;
 }
 

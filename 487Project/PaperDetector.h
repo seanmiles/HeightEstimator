@@ -23,6 +23,7 @@ private:
 	double height;
 	bool hasOverlayImg;
 	int thresh = 50, N = 5;
+	int imgHeight; //need for height calculation
 
 public:
 	PaperDetector(Mat);
@@ -42,6 +43,7 @@ public:
 	double getPaperHeight(); 
 	int getObjectWidth(); 
 	int getObjectHeight(); 
+	int getImageHeight(); //need for height calculation
 };
 
 #endif
