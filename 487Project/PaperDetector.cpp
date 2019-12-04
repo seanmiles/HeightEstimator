@@ -37,16 +37,16 @@ void PaperDetector::detectPaper() {
 		int ch[] = { c, 0 };
 		mixChannels(&timg, 1, &gray0, 1, ch, 1);
 		string path = "gray0-mixCh" + to_string(c) + ".jpg";
-		imwrite(path, gray0);
+		//imwrite(path, gray0);
 		for (int l = 0; l < N; l++) {
 			if (l == 0) {
 				Canny(gray0, gray, 0, thresh, 5);
 				dilate(gray, gray, Mat(), Point(-1, -1));
-				imwrite("gray-threshold0.jpg", gray);
+				//imwrite("gray-threshold0.jpg", gray);
 			}
 			else {
 				gray = gray0 >= (l + 1) * 255 / N;
-				imwrite("gray-threshold1.jpg", gray);
+				//imwrite("gray-threshold1.jpg", gray);
 			}
 			findContours(gray, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 
@@ -55,7 +55,7 @@ void PaperDetector::detectPaper() {
 			Mat drawing = Mat::zeros(gray.size(), CV_8UC3);
 			for (size_t i = 0; i < contours.size(); i++) {
 				Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-				drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
+				//drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
 				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.03, true);
 				
 				if (approx.size() == 4 
@@ -71,7 +71,7 @@ void PaperDetector::detectPaper() {
 					}
 				}
 			}
-			imwrite("Contours.jpg", drawing);
+			//imwrite("Contours.jpg", drawing);
 		}
 	}
 
