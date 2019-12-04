@@ -8,7 +8,7 @@ PeopleDetector::PeopleDetector(Mat newImg)
     float ratio = DETECT_HEIGHT / (float)newImg.rows;
     resize(newImg, img, Size(newImg.cols * ratio, DETECT_HEIGHT));
     // Initialize person's height
-    personHeight = 0;
+    personHeight = 0.0;
 }
 
 void PeopleDetector::detectPeople()
@@ -52,8 +52,8 @@ void PeopleDetector::calculateHeight()
     personHeight = abs(top.y - bottom.y);
 }
 
-int PeopleDetector::getHeight() 
+double PeopleDetector::getHeight() 
 {
-	return personHeight * 3;
-    //return personHeight / img.cols;
+	//return personHeight * 3;
+    return personHeight / img.rows;
 }

@@ -1,6 +1,6 @@
 #include "HeightCalculator.h"
 
-HeightCalculator::HeightCalculator(int dpl, int dps, int bh) {
+HeightCalculator::HeightCalculator(int dpl, int dps, double bh, int ih) {
 	feet = 0.0;
 	inches = 0;
 	meters = 0.0;
@@ -14,10 +14,10 @@ HeightCalculator::HeightCalculator(int dpl, int dps, int bh) {
 		detectedPaperLong = dps;
 		detectedPaperShort = dpl;
 	}
-	boxHeight = bh;
+	boxHeight = bh * ih;
 }
 
-HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, int bh) {
+HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, double bh, int ih) {
 	if (dpl > dps) {
 		detectedPaperLong = dpl;
 		detectedPaperShort = dps;
@@ -26,7 +26,7 @@ HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, int
 		detectedPaperLong = dps;
 		detectedPaperShort = dpl;
 	}
-	boxHeight = bh;
+	boxHeight = bh * ih;
 
 	setPaperDimensions(ipl, ips);
 }
