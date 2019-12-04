@@ -55,4 +55,5 @@ void PeopleDetector::calculateHeight()
 int PeopleDetector::getHeight() 
 {
 	return personHeight * 3;
+    //return personHeight / img.cols;
 }
