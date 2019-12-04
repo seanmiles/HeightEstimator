@@ -5,8 +5,10 @@ const int TOP_RIGHT = 0;
 const int BOTTOM_LEFT = 2;
 const int BOTTOM_RIGHT = 1;
 
-PaperDetector::PaperDetector(Mat img) {
-	this->img = img;
+PaperDetector::PaperDetector(Mat newImg) {
+	//float ratio = DETECT_HEIGHT / (float)newImg.rows;
+	//resize(newImg, img, Size(newImg.cols * ratio, DETECT_HEIGHT));
+	this->img = newImg;
 	this->croppedImg = img;
 	this->paperWidth = 8.5;
 	this->paperHeight = 11;
@@ -135,9 +137,11 @@ void PaperDetector::detectPaper() {
 void PaperDetector::displayPaper() {
 	for (size_t i = 0; i < paperSquares.size(); i++)
 	{
-		const Point* p = &paperSquares[i][0];
-		int n = (int)paperSquares[i].size();
-		polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
+		if (i == 0) {
+			const Point* p = &paperSquares[i][0];
+			int n = (int)paperSquares[i].size();
+			polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
+		}
 	}
 
 	imshow("Picture", croppedImg);
@@ -146,39 +150,59 @@ void PaperDetector::displayPaper() {
 
 void PaperDetector::overlayImage(Mat overlay) {
 	for (size_t i = 0; i < paperSquares.size(); i++) {
-		const Point tl = paperSquares[i][TOP_LEFT];
-		const Point tr = paperSquares[i][TOP_RIGHT];
-		const Point bl = paperSquares[i][BOTTOM_LEFT];
-		const Point br = paperSquares[i][BOTTOM_RIGHT];
-		Mat resizedOverlay;
-		int w = 0, h = 0;
-		int x = 0, y = 0;
-		if (abs(tl.x - tr.x) < 10) {
-			w = abs(tl.y - tr.y);
-			h = abs(tl.x - bl.x);
-			x = tr.x;
-			y = tr.y;
-			resize(overlay, resizedOverlay, Size(h, w));
+		if (i == 0) {
+			const Point tl = paperSquares[i][TOP_LEFT];
+			const Point tr = paperSquares[i][TOP_RIGHT];
+			const Point bl = paperSquares[i][BOTTOM_LEFT];
+			const Point br = paperSquares[i][BOTTOM_RIGHT];
+			Mat resizedOverlay;
+			int w = 0, h = 0;
+			int x = 0, y = 0;
+			if (abs(tl.x - tr.x) < 10) {
+				w = abs(tl.y - tr.y);
+				h = abs(tl.x - bl.x);
+				x = tr.x;
+				y = tr.y;
+				resize(overlay, resizedOverlay, Size(h, w));
+			}
+			else {
+				w = abs(tl.x - tr.x);
+				h = abs(tl.y - bl.y);
+				x = tl.x;
+				y = tl.y;
+				resize(overlay, resizedOverlay, Size(w, h));
+			}
+			resizedOverlay.copyTo(croppedImg(Rect(x, y, resizedOverlay.cols, resizedOverlay.rows)));
 		}
-		else {
-			w = abs(tl.x - tr.x);
-			h = abs(tl.y - bl.y);
-			x = tl.x;
-			y = tl.y;
-			resize(overlay, resizedOverlay, Size(w, h));
-		}	
-		resizedOverlay.copyTo(croppedImg(Rect(x, y, resizedOverlay.cols, resizedOverlay.rows)));
 	}
 }
 
 void PaperDetector::overlayImage(String howTall) {
 	for (size_t i = 0; i < paperSquares.size(); i++) {
-		const Point tl = paperSquares[i][TOP_LEFT];
-		const Point br = paperSquares[i][BOTTOM_RIGHT];
-		int w = abs(tl.x - br.x);
-		int h = abs(tl.y - br.y);
-		Point p = Point(tl.x + w / 2 - howTall.length() * 3, tl.y - (tl.y - br.y) / 2);
-		//putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 1, Scalar(255, 191, 0), 2);
+		if (i == 0) {
+			const Point tl = paperSquares[i][TOP_LEFT];
+			const Point tr = paperSquares[i][TOP_RIGHT];
+			const Point bl = paperSquares[i][BOTTOM_LEFT];
+			const Point br = paperSquares[i][BOTTOM_RIGHT];
+			Point left = tl, right = br;
+			// tl at bl
+			if (tl.x < br.x && tl.y < br.y) {
+				left = bl;
+				right = tr;
+			}
+			// tl at br
+			else if (tl.x > br.x && tl.y < br.y) {
+				left = br;
+				right = tl;
+			}
+			// tl at tr
+			else if (tl.x > br.x && tl.y > br.y) {
+				left = tr;
+				right = bl;
+			}
+			Point p = Point(left.x - (left.x - right.x) / 2 - howTall.length() * 3, left.y - (left.y - right.y) / 2);
+			putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 191, 0), 1.5);
+		}
 	}
 }
 
