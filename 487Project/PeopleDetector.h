@@ -13,6 +13,7 @@ class PeopleDetector
 {
 
 private:
+    const int DETECT_HEIGHT = 400;
     HOGDescriptor hog;
     vector<Rect> detections;
     vector<double> weights;
