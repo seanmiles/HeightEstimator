@@ -20,6 +20,7 @@ private:
 	Mat img;
 	double height;
 	bool hasOverlayImg;
+	int imgHeight;
 
 public:
 	PaperDetector(Mat);
@@ -38,6 +39,7 @@ public:
 	double getPaperHeight(); 
 	int getObjectWidth(); 
 	int getObjectHeight(); 
+	int getImageHeight();
 };
 
 #endif

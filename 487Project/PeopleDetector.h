@@ -19,7 +19,7 @@ private:
     vector<double> weights;
     vector<int> indices;
     Mat img;
-	int personHeight;            // store height of box
+	double personHeight;            // store height of box
 	void calculateHeight();      // calculates height of box outlining person detection
 
 public:
@@ -27,7 +27,7 @@ public:
     void detectPeople();
     void displayPeople();
 
-	int getHeight(); // returns pixel height of person in image
+	double getHeight(); // returns pixel height of person in image
 };
 
 #endif

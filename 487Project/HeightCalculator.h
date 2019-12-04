@@ -12,8 +12,8 @@ using namespace std;
 
 class HeightCalculator {
 public:
-	HeightCalculator(int, int, int);
-	HeightCalculator(double, double, int, int, int);
+	HeightCalculator(int, int, double, int);
+	HeightCalculator(double, double, int, int, double, int);
 
 	String getHeightInFeet();
 	String getHeightInMeters();
@@ -37,7 +37,7 @@ private:
 	int detectedPaperLong; //longer dimension
 	int detectedPaperShort; //shorter
 
-	int boxHeight; //height of box outlining detected person
+	double boxHeight; //height of box outlining detected person
 
 	void calculateHeight();
 };

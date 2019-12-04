@@ -5,14 +5,15 @@ const int TOP_RIGHT = 0;
 const int BOTTOM_LEFT = 2;
 const int BOTTOM_RIGHT = 1;
 
-PaperDetector::PaperDetector(Mat img) {
-	this->img = img;
+PaperDetector::PaperDetector(Mat input) {
+	this->img = input;
 	this->paperWidth = 8.5;
 	this->paperHeight = 11;
 	hasOverlayImg = false;
 	height = 0;
 	objWidth = 0;
 	objHeight = 0;
+	imgHeight = input.rows;
 }
 
 void PaperDetector::detectPaper() {
@@ -183,5 +184,9 @@ int PaperDetector::getObjectWidth() {
 
 int PaperDetector::getObjectHeight() {
 	return objHeight;
+}
+
+int PaperDetector::getImageHeight() {
+	return imgHeight;
 }
 
