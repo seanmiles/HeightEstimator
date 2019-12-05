@@ -11,7 +11,7 @@ using namespace std;
 class PaperDetector {
 
 private:
-	const int DETECT_HEIGHT = 600;
+	const int DETECT_HEIGHT = 400;
 	vector<vector<Point>> contours;
 	vector<vector<Point>> squares;
 	vector<vector<Point>> paperSquares;

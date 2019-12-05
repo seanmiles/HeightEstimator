@@ -22,9 +22,11 @@ PaperDetector::PaperDetector(Mat newImg) {
 void PaperDetector::setDetectedArea(Rect r, Mat resized) {
 	double ratioRows = (double) img.rows / (double) resized.rows;
 	double ratioCols = (double) img.cols / (double) resized.cols;
-	int w = r.width * ratioRows;
-	int h = r.height * ratioCols;
-	Rect crop(r.tl().x * ratioRows, r.tl().y * ratioCols, w, h);
+	this->img = resized;
+	int w = r.width;
+	int h = r.height;
+	//Rect crop(r.tl().x * ratioRows, r.tl().y * ratioCols, w, h);
+	Rect crop(r.tl().x, r.tl().y, w, h);
 	croppedImg = img(crop);
 }
 RNG rng(12345);
@@ -108,9 +110,13 @@ void PaperDetector::detectPaper() {
 		else if (tl.x > br.x && tl.y > br.y) {
 			left = tr;
 			right = bl;
+			if (tr.x > bl.x && tr.y < bl.y) {
+				left = bl;
+				right = tr;
+			}
 		}
 		cout << tl << ", " << br << "  " << left << ", " << right << endl;
-		if (p->x > 3 && p->y > 3) {
+		if (p->x >= 2 && p->y >= 2) {
 			for (int r = left.x; r < right.x; r++) {
 				for (int c = left.y - 1; c >= right.y; c--) {
 					for (int b = 0; b < 3; b++) {
@@ -119,7 +125,7 @@ void PaperDetector::detectPaper() {
 						}
 					}
 					avg /= 3;
-					if (avg >= 220) {
+					if (avg >= 180) {
 						avg = 0;
 						paperSquares.push_back(squares[i]);
 					}
@@ -140,7 +146,7 @@ void PaperDetector::displayPaper() {
 		if (i == 0) {
 			const Point* p = &paperSquares[i][0];
 			int n = (int)paperSquares[i].size();
-			polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 3, LINE_AA);
+			polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 2, LINE_AA);
 		}
 	}
 
@@ -201,7 +207,7 @@ void PaperDetector::overlayImage(String howTall) {
 				right = bl;
 			}
 			Point p = Point(left.x - (left.x - right.x) / 2 - howTall.length() * 3, left.y - (left.y - right.y) / 2);
-			putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 0.5, Scalar(255, 191, 0), 1.5);
+			putText(croppedImg, howTall, p, FONT_HERSHEY_DUPLEX, 0.3, Scalar(255, 191, 0), 1);
 		}
 	}
 }
