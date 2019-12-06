@@ -70,7 +70,7 @@ void HeightCalculator::setPaperDimensions(double dim1, double dim2) {
 void HeightCalculator::calculateHeight() {
 	//find ratio of detected paper's length to the box height, in pixels
 	double ratio = (boxHeight * 0.9) / detectedPaperLong;
-	
+
 	//multiply ratio by actual dimensions input by user (in inches)
 	double length = ratio * inputPaperLong;
 

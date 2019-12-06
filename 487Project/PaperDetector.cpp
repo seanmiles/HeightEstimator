@@ -20,8 +20,8 @@ PaperDetector::PaperDetector(Mat newImg) {
 }
 
 void PaperDetector::setDetectedArea(Rect r, Mat resized) {
-	double ratioRows = (double) img.rows / (double) resized.rows;
-	double ratioCols = (double) img.cols / (double) resized.cols;
+	double ratioRows = (double)img.rows / (double)resized.rows;
+	double ratioCols = (double)img.cols / (double)resized.cols;
 	this->img = resized;
 	int w = r.width;
 	int h = r.height;
@@ -42,7 +42,7 @@ void PaperDetector::detectPaper() {
 	//medianBlur(croppedImg, timg, 9);
 	//Mat gray0(timg.size(), CV_8U), gray;
 	//imwrite("blurred.jpg", blurred);
-	
+
 	for (int c = 0; c < 3; c++) {
 		int ch[] = { c, 0 };
 		mixChannels(&timg, 1, &gray0, 1, ch, 1);
@@ -67,16 +67,16 @@ void PaperDetector::detectPaper() {
 				//Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
 				//drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
 				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) * 0.03, true);
-				
-				if (approx.size() == 4 
-					&& fabs(contourArea(Mat(approx))) > 1000 
+
+				if (approx.size() == 4
+					&& fabs(contourArea(Mat(approx))) > 1000
 					&& isContourConvex(Mat(approx))) {
 					double maxCosine = 0;
 					for (int j = 2; j < 5; j++) {
 						double cosine = fabs(angle(approx[j % 4], approx[j - 2], approx[j - 1]));
 						maxCosine = MAX(maxCosine, cosine);
 					}
-					if (maxCosine < 0.5) {
+					if (maxCosine < 0.3) {
 						squares.push_back(approx);
 					}
 				}
@@ -100,21 +100,21 @@ void PaperDetector::detectPaper() {
 			right = tr;
 		}
 		// tl at br
-		else if (tl.x > br.x && tl.y < br.y) {
+		else if (tl.x > br.x&& tl.y < br.y) {
 			left = br;
 			right = tl;
 		}
 		// tl at tr
-		else if (tl.x > br.x && tl.y > br.y) {
+		else if (tl.x > br.x&& tl.y > br.y) {
 			left = tr;
 			right = bl;
-			if (tr.x > bl.x && tr.y < bl.y) {
+			if (tr.x > bl.x&& tr.y < bl.y) {
 				left = bl;
 				right = tr;
 			}
 		}
-		cout << tl << ", " << br << "  " << left << ", " << right << endl;
-		if (p->x >= img.rows / 8 && p->y >= 2 && p->y < img.cols * 2 / 3) {
+		//cout << tl << ", " << br << "  " << left << ", " << right << endl;
+		if (p->x >= 2 && p->y >= 2) {
 			for (int r = left.x; r < right.x; r++) {
 				for (int c = left.y - 1; c >= right.y; c--) {
 					for (int b = 0; b < 3; b++) {
@@ -133,14 +133,17 @@ void PaperDetector::detectPaper() {
 				}
 			}
 		}
+
 	}
+
 	const Point tl = paperSquares[0][TOP_LEFT];
 	const Point tr = paperSquares[0][TOP_RIGHT];
 	const Point bl = paperSquares[0][BOTTOM_LEFT];
 	const Point br = paperSquares[0][BOTTOM_RIGHT];
 	objWidth = abs(tl.x - br.x);
 	objHeight = abs(tl.y - br.y);
-	cout << paperSquares.size() << endl;
+
+	//cout << paperSquares.size() << endl;
 }
 
 void PaperDetector::displayPaper() {
@@ -200,12 +203,12 @@ void PaperDetector::overlayImage(String howTall) {
 				right = tr;
 			}
 			// tl at br
-			else if (tl.x > br.x && tl.y < br.y) {
+			else if (tl.x > br.x&& tl.y < br.y) {
 				left = br;
 				right = tl;
 			}
 			// tl at tr
-			else if (tl.x > br.x && tl.y > br.y) {
+			else if (tl.x > br.x&& tl.y > br.y) {
 				left = tr;
 				right = bl;
 			}
@@ -235,7 +238,7 @@ double PaperDetector::angle(Point pt1, Point pt2, Point pt0)
 	double dy1 = pt1.y - pt0.y;
 	double dx2 = pt2.x - pt0.x;
 	double dy2 = pt2.y - pt0.y;
-	return (dx1*dx2 + dy1 * dy2) / sqrt((dx1*dx1 + dy1 * dy1)*(dx2*dx2 + dy2 * dy2) + 1e-10);
+	return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
 
 double PaperDetector::inchToPixel(double in) {

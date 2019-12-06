@@ -23,7 +23,7 @@ private:
 	Mat croppedImg;
 	double height;
 	bool hasOverlayImg;
-	int thresh = 50, N = 11;
+	int thresh = 50, N = 5;
 	int imgHeight; //need for height calculation
 
 public:
@@ -40,10 +40,10 @@ public:
 	double angle(Point, Point, Point);
 	double inchToPixel(double);
 
-	double getPaperWidth(); 
-	double getPaperHeight(); 
-	int getObjectWidth(); 
-	int getObjectHeight(); 
+	double getPaperWidth();
+	double getPaperHeight();
+	int getObjectWidth();
+	int getObjectHeight();
 	int getImageHeight(); //need for height calculation
 };
 

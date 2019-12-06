@@ -13,19 +13,19 @@ class PeopleDetector
 {
 
 private:
-    const int DETECT_HEIGHT = 400;
-    HOGDescriptor hog;
-    vector<Rect> detections;
-    vector<double> weights;
-    vector<int> indices;
-    Mat img;
+	const int DETECT_HEIGHT = 400;
+	HOGDescriptor hog;
+	vector<Rect> detections;
+	vector<double> weights;
+	vector<int> indices;
+	Mat img;
 	double personHeight;            // store height of box
 	void calculateHeight();      // calculates height of box outlining person detection
 
 public:
-    PeopleDetector(Mat newImg);
-    void detectPeople();
-    void displayPeople();
+	PeopleDetector(Mat newImg);
+	void detectPeople();
+	void displayPeople();
 
 	double getHeight(); // returns pixel height of person in image
 	Rect getDetectedRect();

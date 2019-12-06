@@ -18,14 +18,14 @@ using namespace std;
 // postconditions: A
 int main(int argc, char* argv[])
 {
-	Mat img = imread("Jamie.jpg");
+	Mat img = imread("Blake.jpg");
 	Mat overlay = imread("overlay.jpg");
 	if (!img.data) return -1;
 	if (!overlay.data) return -1;
 
-    // Detections
-    PeopleDetector people(img);
-    people.detectPeople();
+	// Detections
+	PeopleDetector people(img);
+	people.detectPeople();
 	PaperDetector paper(img);
 	paper.setDetectedArea(people.getDetectedRect(), people.getDetectedImg());
 	paper.detectPaper();
@@ -38,13 +38,13 @@ int main(int argc, char* argv[])
 	cout << height.getHeightInFeet() << endl;
 	cout << height.getHeightInMeters() << endl;
 
-    // Overlay Image
+	// Overlay Image
 	//paper.overlayImage(overlay);
 	paper.overlayImage(howTall);
-    // Display
+	// Display
 	paper.displayPaper();
-    people.displayPeople();
+	people.displayPeople();
 
-    waitKey(0);
-    return 0;
+	waitKey(0);
+	return 0;
 }
