@@ -77,8 +77,15 @@ void HeightCalculator::calculateHeight() {
 
 		//multiply ratio by actual dimensions input by user (in inches)
 		double length = ratio * inputPaperLong;
-
-		inches = floor(length);
+		
+		if (length <= 72.0) {
+			length += 1.0;
+		}
+		else {
+			length -= 1.0;
+		}
+		cout << length << endl;
+		inches = round(length);
 		feet = length / 12;
 		meters = length * 0.0254;
 	}
