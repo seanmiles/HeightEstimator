@@ -18,6 +18,9 @@ HeightCalculator::HeightCalculator(int dpl, int dps, double bh) {
 }
 
 HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, double bh) {
+	feet = 0.0;
+	inches = 0;
+	meters = 0.0;
 	if (dpl > dps) {
 		detectedPaperLong = dpl;
 		detectedPaperShort = dps;
@@ -68,15 +71,17 @@ void HeightCalculator::setPaperDimensions(double dim1, double dim2) {
 }
 
 void HeightCalculator::calculateHeight() {
-	//find ratio of detected paper's length to the box height, in pixels
-	double ratio = (boxHeight * 0.9) / detectedPaperLong;
+	if (detectedPaperLong != 0) {
+		//find ratio of detected paper's length to the box height, in pixels
+		double ratio = (boxHeight * 0.9) / detectedPaperLong;
 
-	//multiply ratio by actual dimensions input by user (in inches)
-	double length = ratio * inputPaperLong;
+		//multiply ratio by actual dimensions input by user (in inches)
+		double length = ratio * inputPaperLong;
 
-	inches = floor(length);
-	feet = length / 12;
-	meters = length * 0.0254;
+		inches = floor(length);
+		feet = length / 12;
+		meters = length * 0.0254;
+	}
 }
 
 

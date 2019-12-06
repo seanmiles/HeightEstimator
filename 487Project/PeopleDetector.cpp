@@ -1,7 +1,6 @@
 #include "PeopleDetector.h"
 
-PeopleDetector::PeopleDetector(Mat newImg)
-{
+PeopleDetector::PeopleDetector(Mat newImg) {
 	// Set SVM Detector for HoG
 	hog.setSVMDetector(HOGDescriptor::getDefaultPeopleDetector());
 	// Resize to a constant height for easier detection
@@ -11,30 +10,36 @@ PeopleDetector::PeopleDetector(Mat newImg)
 	personHeight = 0.0;
 }
 
-void PeopleDetector::detectPeople()
-{
+void PeopleDetector::detectPeople() {
 	// Detect in image
 	hog.detectMultiScale(img, detections, weights, 0, Size(2, 2), Size(), 1.1, 2, false);
 	// Perform non maximum suppression
 	vector<float> confidences(weights.begin(), weights.end());
 	dnn::NMSBoxes(detections, confidences, 0, 0, indices, 1.2f, 0);
+
 	// Calculate height in pixels
-	calculateHeight();
+	if (detections.size() > 0) {
+		calculateHeight();
+	}
+	else {
+		cout << "No person detected. Height will be 0." << endl;
+	}
+	
 }
 
-void PeopleDetector::displayPeople()
-{
-	// Slightly shrink height of rectangles and draw
-	for (int index : indices)
-	{
-		Rect r = detections[index];
+void PeopleDetector::displayPeople() {
+	if (detections.size() > 0) {
+		// Slightly shrink height of rectangles and draw
+		for (int index : indices) {
+			Rect r = detections[index];
 
-		// Decrease rectangle area slightly due to common overestimation
-		r.x += cvRound(r.width * 0.15);
-		r.width = cvRound(r.width * 0.7);
-		r.y += cvRound(r.height * 0.025);
-		r.height = cvRound(r.height * 0.9);
-		rectangle(img, r.tl(), r.br(), cv::Scalar(0, 0, 255), 3);
+			// Decrease rectangle area slightly due to common overestimation
+			r.x += cvRound(r.width * 0.15);
+			r.width = cvRound(r.width * 0.7);
+			r.y += cvRound(r.height * 0.025);
+			r.height = cvRound(r.height * 0.9);
+			rectangle(img, r.tl(), r.br(), cv::Scalar(0, 0, 255), 3);
+		}
 	}
 
 	// Display detections
@@ -44,23 +49,26 @@ void PeopleDetector::displayPeople()
 	waitKey(0);
 }
 
-void PeopleDetector::calculateHeight()
-{
+void PeopleDetector::calculateHeight() {
 	Rect person = detections[0];
 	Point top = person.tl();
 	Point bottom = person.br();
 	personHeight = abs(top.y - bottom.y);
 }
 
-double PeopleDetector::getHeight()
-{
+double PeopleDetector::getHeight() {
 	return personHeight;
-	//return personHeight / img.rows;
 }
 
-Rect PeopleDetector::getDetectedRect()
-{
-	return detections[0];
+Rect PeopleDetector::getDetectedRect() {
+	if (detections.size() > 0) {
+		return detections[0];
+	}
+	else {
+		Rect base(0, 0, 1, 1);
+		return base;
+	}
+	
 }
 
 Mat PeopleDetector::getDetectedImg() {

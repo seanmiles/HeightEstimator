@@ -138,12 +138,19 @@ void PaperDetector::detectPaper() {
 
 	}
 
-	const Point tl = paperSquares[0][TOP_LEFT];
-	const Point tr = paperSquares[0][TOP_RIGHT];
-	const Point bl = paperSquares[0][BOTTOM_LEFT];
-	const Point br = paperSquares[0][BOTTOM_RIGHT];
-	objWidth = abs(tl.x - br.x);
-	objHeight = abs(tl.y - br.y);
+	if (paperSquares.size() > 0) {
+		const Point tl = paperSquares[0][TOP_LEFT];
+		const Point tr = paperSquares[0][TOP_RIGHT];
+		const Point bl = paperSquares[0][BOTTOM_LEFT];
+		const Point br = paperSquares[0][BOTTOM_RIGHT];
+		objWidth = abs(tl.x - br.x);
+		objHeight = abs(tl.y - br.y);
+	}
+	else {
+		objWidth = 0;
+		objHeight = 0;
+		cout << "No paper detected. Height will be 0." << endl;
+	}
 
 	//cout << paperSquares.size() << endl;
 }
