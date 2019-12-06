@@ -76,7 +76,7 @@ void PaperDetector::detectPaper() {
 						double cosine = fabs(angle(approx[j % 4], approx[j - 2], approx[j - 1]));
 						maxCosine = MAX(maxCosine, cosine);
 					}
-					if (maxCosine < 0.3) {
+					if (maxCosine < 0.5) {
 						squares.push_back(approx);
 					}
 				}
@@ -92,6 +92,8 @@ void PaperDetector::detectPaper() {
 		const Point bl = squares[i][BOTTOM_LEFT];
 		const Point br = squares[i][BOTTOM_RIGHT];
 		const Point* p = &squares[i][0];
+		objWidth = abs(tl.x - br.x);
+		objHeight = abs(tl.y - br.y);
 		int avg = 0;
 		Point left = tl, right = br;
 		// tl at bl
@@ -113,8 +115,8 @@ void PaperDetector::detectPaper() {
 				right = tr;
 			}
 		}
-		//cout << tl << ", " << br << "  " << left << ", " << right << endl;
-		if (p->x >= 2 && p->y >= 2) {
+		cout << tl << ", " << br << "  " << left << ", " << right << endl;
+		if (p->x >= img.rows / 8 && p->y >= 2 && p->y < img.cols * 2 / 3) {
 			for (int r = left.x; r < right.x; r++) {
 				for (int c = left.y - 1; c >= right.y; c--) {
 					for (int b = 0; b < 3; b++) {
@@ -135,15 +137,7 @@ void PaperDetector::detectPaper() {
 		}
 		
 	}
-
-	const Point tl = paperSquares[0][TOP_LEFT];
-	const Point tr = paperSquares[0][TOP_RIGHT];
-	const Point bl = paperSquares[0][BOTTOM_LEFT];
-	const Point br = paperSquares[0][BOTTOM_RIGHT];
-	objWidth = abs(tl.x - br.x);
-	objHeight = abs(tl.y - br.y);
-
-	//cout << paperSquares.size() << endl;
+	cout << paperSquares.size() << endl;
 }
 
 void PaperDetector::displayPaper() {

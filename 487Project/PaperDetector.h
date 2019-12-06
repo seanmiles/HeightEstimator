@@ -23,7 +23,7 @@ private:
 	Mat croppedImg;
 	double height;
 	bool hasOverlayImg;
-	int thresh = 50, N = 5;
+	int thresh = 50, N = 11;
 	int imgHeight; //need for height calculation
 
 public:
