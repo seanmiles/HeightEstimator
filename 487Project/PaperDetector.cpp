@@ -76,7 +76,8 @@ void PaperDetector::detectPaper() {
 						double cosine = fabs(angle(approx[j % 4], approx[j - 2], approx[j - 1]));
 						maxCosine = MAX(maxCosine, cosine);
 					}
-					if (maxCosine < 0.3) {
+					if (maxCosine < 0.5) {
+					//if (maxCosine < 0.3) {
 						squares.push_back(approx);
 					}
 				}
@@ -114,7 +115,8 @@ void PaperDetector::detectPaper() {
 			}
 		}
 		//cout << tl << ", " << br << "  " << left << ", " << right << endl;
-		if (p->x >= 2 && p->y >= 2) {
+		if (p->x >= img.rows / 8 && p->y >= 2 && p->y < img.cols * 2 / 3) {
+		//if (p->x >= 2 && p->y >= 2) {
 			for (int r = left.x; r < right.x; r++) {
 				for (int c = left.y - 1; c >= right.y; c--) {
 					for (int b = 0; b < 3; b++) {
