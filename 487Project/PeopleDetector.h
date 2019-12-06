@@ -19,6 +19,7 @@ private:
 	vector<double> weights;
 	vector<int> indices;
 	Mat img;
+    int NMSIndex;
 	double personHeight;            // store height of box
 	void calculateHeight();      // calculates height of box outlining person detection
 

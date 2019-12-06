@@ -16,7 +16,7 @@ void PeopleDetector::detectPeople() {
 	// Perform non maximum suppression
 	vector<float> confidences(weights.begin(), weights.end());
 	dnn::NMSBoxes(detections, confidences, 0, 0, indices, 1.2f, 0);
-
+    NMSIndex = indices.front();
 	// Calculate height in pixels
 	if (detections.size() > 0) {
 		calculateHeight();
@@ -50,7 +50,7 @@ void PeopleDetector::displayPeople() {
 }
 
 void PeopleDetector::calculateHeight() {
-	Rect person = detections[0];
+	Rect person = detections[NMSIndex];
 	Point top = person.tl();
 	Point bottom = person.br();
 	personHeight = abs(top.y - bottom.y);
@@ -62,7 +62,7 @@ double PeopleDetector::getHeight() {
 
 Rect PeopleDetector::getDetectedRect() {
 	if (detections.size() > 0) {
-		return detections[0];
+		return detections[NMSIndex];
 	}
 	else {
 		Rect base(0, 0, 1, 1);
