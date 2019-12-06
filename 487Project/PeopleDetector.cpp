@@ -16,7 +16,13 @@ void PeopleDetector::detectPeople() {
 	// Perform non maximum suppression
 	vector<float> confidences(weights.begin(), weights.end());
 	dnn::NMSBoxes(detections, confidences, 0, 0, indices, 1.2f, 0);
-    NMSIndex = indices.front();
+    // Get first index after non maximum suppression
+    if (indices.size() > 0) {
+        NMSIndex = indices.front();
+    }
+    else {
+        NMSIndex = 0;
+    }
 	// Calculate height in pixels
 	if (detections.size() > 0) {
 		calculateHeight();
