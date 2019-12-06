@@ -1,6 +1,6 @@
 #include "HeightCalculator.h"
 
-HeightCalculator::HeightCalculator(int dpl, int dps, double bh, int ih) {
+HeightCalculator::HeightCalculator(int dpl, int dps, double bh) {
 	feet = 0.0;
 	inches = 0;
 	meters = 0.0;
@@ -14,10 +14,10 @@ HeightCalculator::HeightCalculator(int dpl, int dps, double bh, int ih) {
 		detectedPaperLong = dps;
 		detectedPaperShort = dpl;
 	}
-	boxHeight = bh * ih;
+	boxHeight = bh;
 }
 
-HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, double bh, int ih) {
+HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, double bh) {
 	if (dpl > dps) {
 		detectedPaperLong = dpl;
 		detectedPaperShort = dps;
@@ -26,7 +26,7 @@ HeightCalculator::HeightCalculator(double ipl, double ips, int dpl, int dps, dou
 		detectedPaperLong = dps;
 		detectedPaperShort = dpl;
 	}
-	boxHeight = bh * ih;
+	boxHeight = bh;
 
 	setPaperDimensions(ipl, ips);
 }
@@ -69,7 +69,7 @@ void HeightCalculator::setPaperDimensions(double dim1, double dim2) {
 
 void HeightCalculator::calculateHeight() {
 	//find ratio of detected paper's length to the box height, in pixels
-	double ratio = boxHeight / detectedPaperLong;
+	double ratio = (boxHeight * 0.9) / detectedPaperLong;
 	
 	//multiply ratio by actual dimensions input by user (in inches)
 	double length = ratio * inputPaperLong;

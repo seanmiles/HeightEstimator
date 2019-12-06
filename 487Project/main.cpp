@@ -18,7 +18,7 @@ using namespace std;
 // postconditions: A
 int main(int argc, char* argv[])
 {
-	Mat img = imread("test4.jpg");
+	Mat img = imread("Jamie.jpg");
 	Mat overlay = imread("overlay.jpg");
 	if (!img.data) return -1;
 	if (!overlay.data) return -1;
@@ -32,8 +32,7 @@ int main(int argc, char* argv[])
 
 	//Height Calculations
 	HeightCalculator height(paper.getPaperHeight(), paper.getPaperWidth(),
-		paper.getObjectHeight(), paper.getObjectWidth(), people.getHeight(),
-		paper.getImageHeight());
+		paper.getObjectHeight(), paper.getObjectWidth(), people.getHeight());
 	String howTall = height.getHeightInFeet();
 
 	cout << height.getHeightInFeet() << endl;

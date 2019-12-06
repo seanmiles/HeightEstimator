@@ -12,8 +12,8 @@ using namespace std;
 
 class HeightCalculator {
 public:
-	HeightCalculator(int, int, double, int);
-	HeightCalculator(double, double, int, int, double, int);
+	HeightCalculator(int, int, double);
+	HeightCalculator(double, double, int, int, double);
 
 	String getHeightInFeet();
 	String getHeightInMeters();

@@ -92,8 +92,6 @@ void PaperDetector::detectPaper() {
 		const Point bl = squares[i][BOTTOM_LEFT];
 		const Point br = squares[i][BOTTOM_RIGHT];
 		const Point* p = &squares[i][0];
-		objWidth = abs(tl.x - br.x);
-		objHeight = abs(tl.y - br.y);
 		int avg = 0;
 		Point left = tl, right = br;
 		// tl at bl
@@ -115,7 +113,7 @@ void PaperDetector::detectPaper() {
 				right = tr;
 			}
 		}
-		cout << tl << ", " << br << "  " << left << ", " << right << endl;
+		//cout << tl << ", " << br << "  " << left << ", " << right << endl;
 		if (p->x >= 2 && p->y >= 2) {
 			for (int r = left.x; r < right.x; r++) {
 				for (int c = left.y - 1; c >= right.y; c--) {
@@ -137,7 +135,15 @@ void PaperDetector::detectPaper() {
 		}
 		
 	}
-	cout << paperSquares.size() << endl;
+
+	const Point tl = paperSquares[0][TOP_LEFT];
+	const Point tr = paperSquares[0][TOP_RIGHT];
+	const Point bl = paperSquares[0][BOTTOM_LEFT];
+	const Point br = paperSquares[0][BOTTOM_RIGHT];
+	objWidth = abs(tl.x - br.x);
+	objHeight = abs(tl.y - br.y);
+
+	//cout << paperSquares.size() << endl;
 }
 
 void PaperDetector::displayPaper() {

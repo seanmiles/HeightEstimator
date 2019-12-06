@@ -54,8 +54,8 @@ void PeopleDetector::calculateHeight()
 
 double PeopleDetector::getHeight() 
 {
-	//return personHeight * 3;
-    return personHeight / img.rows;
+	return personHeight;
+    //return personHeight / img.rows;
 }
 
 Rect PeopleDetector::getDetectedRect() 
