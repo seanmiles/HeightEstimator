@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 	cin >> system;
 
 	string overlayHeight;
-	cout << "Would you like an image overlayed onto the paper? (Y or N)" << endl;
+	cout << "Would you like an image ('overlay.jpg') overlayed onto the paper? (Y or N)" << endl;
 	cin >> overlayHeight;
 
 	char measure = system.at(0);
