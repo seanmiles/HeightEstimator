@@ -72,8 +72,13 @@ String HeightCalculator::getHeightInFeet() {
 // Preconditions: None
 // Postconditions: returns a string containing the height in meters (m)
 String HeightCalculator::getHeightInMeters() {
-	String height = "" + to_string(meters) + "m";
-	return height;
+    ostringstream obj;
+    obj << fixed;
+    obj << setprecision(3);
+    obj << meters;
+
+    String height = "" + obj.str() + "m";
+    return height;
 }
 
 // getFeet: returns height in feet only

@@ -77,7 +77,6 @@ void PeopleDetector::displayPeople() {
 	namedWindow("Detected People");
 	imshow("Detected People", img);
 	imwrite("people_out.jpg", img);
-	waitKey(0);
 }
 
 // calculateHeight: calculates height of the identification box
