@@ -55,37 +55,53 @@ void PaperDetector::detectPaper() {
 	// down-scale and upscale the image to filter out the noise
 	pyrDown(croppedImg, pyr, Size(croppedImg.cols / 2, croppedImg.rows / 2));
 	pyrUp(pyr, timg, croppedImg.size());
-
+	// find squares in every color plane of the image
 	for (int c = 0; c < 3; c++) {
 		int ch[] = { c, 0 };
 		mixChannels(&timg, 1, &gray0, 1, ch, 1);
-
+		// try several threshold levels
 		for (int l = 0; l < N; l++) {
 			if (l == 0) {
+				//Canny helps to catch squares with gradient shading
 				Canny(gray0, gray, 0, thresh, 5);
+				// dilate canny output to remove potential
+				// holes between edge segments
 				dilate(gray, gray, Mat(), Point(-1, -1));
 			}
 			else {
 				gray = gray0 >= (l + 1) * 255 / N;
 			}
+			// find contours and store them all as a list
 			findContours(gray, contours, RETR_LIST, CHAIN_APPROX_SIMPLE);
 
 			vector<Point> approx;
 			vector<Vec4i> hierarchy;
 			Mat drawing = Mat::zeros(gray.size(), CV_8UC3);
 			for (size_t i = 0; i < contours.size(); i++) {
+				// approximate contour with accuracy proportional
+				// to the contour perimeter
 				approxPolyDP(Mat(contours[i]), approx, arcLength(Mat(contours[i]), true) 
 					* 0.03, true);
 
+				// square contours should have 4 vertices after approximation
+				// relatively large area (to filter out noisy contours)
+				// and be convex.
+				// Note: absolute value of an area is used because
+				// area may be positive or negative - in accordance with the
+				// contour orientation
 				if (approx.size() == 4
 					&& fabs(contourArea(Mat(approx))) > 1000
 					&& isContourConvex(Mat(approx))) {
 					double maxCosine = 0;
 					for (int j = 2; j < 5; j++) {
+						// find the maximum cosine of the angle between joint edges
 						double cosine = (double)fabs(angle(approx[j % 4], 
 							approx[j - 2], approx[j - 1]));
 						maxCosine = MAX(maxCosine, cosine);
 					}
+					// if cosines of all angles are small
+					// (all angles are ~90 degree) then write quandrange
+					// vertices to resultant sequence
 					if (maxCosine < 0.5) {
 						squares.push_back(approx);
 					}
@@ -187,9 +203,6 @@ void PaperDetector::displayPaper() {
 		int n = (int)paperSquares[0].size();
 		polylines(croppedImg, &p, &n, 1, true, Scalar(0, 255, 0), 2, LINE_AA);
 	}
-
-	imshow("Picture", croppedImg);
-	imwrite("paper_out.jpg", croppedImg);
 }
 
 // overlayImage: overlays the detected paper with a image from the file
