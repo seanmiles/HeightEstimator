@@ -24,17 +24,26 @@
 using namespace cv;
 using namespace std;
 
-// main
-// precondition: A
-// postconditions: A
+// main method
+// Preconditions: overlay.jpg exists in the code directory and is a valid JPG
+// Postconditions: Two images are displayed on the screen. The first shows
+// just the people detector box, and the second will display both the people 
+// and paper boxes, along with the calculated height displayed on the paper if
+// the user desires.
 int main(int argc, char* argv[]) {
-
+	//Get input from user
 	string filename;
-	sscanf_s(argv[1], "%s", &filename);
+	cout << "Please input filename you would like to test." << endl;
+	cin >> filename;
+
 	string system;
-	sscanf_s(argv[2], "%s", &system);
+	cout << "Would you like height displayed in meters or feet? (F or M)" << endl;
+	cin >> system;
+
 	string overlayHeight;
-	sscanf_s(argv[3], "%s", &overlayHeight);
+	cout << "Would you like an image overlayed onto the paper? (Y or N)" << endl;
+	cin >> overlayHeight;
+
 	char measure = system.at(0);
 	char dispOverlay = overlayHeight.at(0);
 

@@ -127,7 +127,6 @@ void HeightCalculator::calculateHeight() {
 			length -= 1.0;
 		}
 
-		cout << length << endl;
 		inches = round(length);
 		feet = length / 12;
 		meters = length * 0.0254;
