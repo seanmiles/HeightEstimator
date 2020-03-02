@@ -29,7 +29,7 @@ Run from IDE:
 ## Developers
 <img src="https://s3-us-west-2.amazonaws.com/uw-s3-cdn/wp-content/uploads/sites/6/2017/03/04142730/uw-bothell-squarelogo-1424849922003-150x150.png" align="right" width="100" height="100">
 
-🖥️ Developed by University of Washington Bothell Students
+> 🖥️ Developed by University of Washington Bothell Students
 
 - Sean Miles
 - Tung Dinh
