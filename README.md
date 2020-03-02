@@ -16,7 +16,15 @@ Run from IDE:
 `N`
 
 ## Example Results
-> ...
+| Input  | Output |
+| ------------- | ------------- |
+| <img src="docs/height_input1.jpg" width="300" height="400"><br /> **Actual: 5' 4"**  | <img src="docs/height_output1.jpg" width="300" height="400"><br /> **Estimated: 5' 4"**  |
+| <img src="docs/height_input2.jpg" width="300" height="400"><br /> **Actual: 5' 11"**  | <img src="docs/height_output2.jpg" width="300" height="400"><br /> **Estimated: 5' 11"**  |
+| <img src="docs/height_input3.jpg" width="300" height="400"><br /> **Actual: 5' 4"**  | <img src="docs/height_output3.jpg" width="300" height="400"><br /> **Estimated: 4' 9"**  |
+| <img src="docs/height_input4.jpg" width="300" height="400"><br /> **Actual: 5' 9"**  | <img src="docs/height_output4.jpg" width="300" height="400"><br /> **Estimated: 6' 2"**  |
+| <img src="docs/height_input5.jpg" width="300" height="400"><br /> **Actual: 6' 0"**  | <img src="docs/height_output5.jpg" width="300" height="400"><br /> **Estimated: 6' 1"**  |
+| <img src="docs/height_input6.jpg" width="300" height="400"><br /> **Actual: 6' 2"**  | <img src="docs/height_output6.jpg" width="300" height="400"><br /> **[Paper Not Found]**  |
+| <img src="docs/overlay_input.jpg" width="300" height="400"><br /> **Image Overlay**  | <img src="docs/overlay_output.jpg" width="199" height="400"><br /> **Image Overlay** |
 
 ## Developers
 <img src="https://s3-us-west-2.amazonaws.com/uw-s3-cdn/wp-content/uploads/sites/6/2017/03/04142730/uw-bothell-squarelogo-1424849922003-150x150.png" align="right" width="100" height="100">
