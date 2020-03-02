@@ -4,7 +4,16 @@
 > Developed using C++ and the OpenCV Library
 
 ## Example Input
-> ...
+Run from IDE:
+
+`Please input filename you would like to test.`<br />
+`Jamie.jpg`
+
+`Would you like height displayed in meters or feet? (F or M)`<br />
+`F`
+
+`Would you like an image ('overlay.jpg') overlayed onto the paper? (Y or N)`<br />
+`N`
 
 ## Example Results
 > ...
